@@ -4,6 +4,7 @@ export default function ProductCard({ product, addToCart }) {
   const [currentImage, setCurrentImage] = useState(0);
   const [selectedTaille, setSelectedTaille] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
 
   const handleAddToCart = () => {
     if (!selectedTaille) {
@@ -18,8 +19,11 @@ export default function ProductCard({ product, addToCart }) {
   const handleWhatsapp = () => {
     const taille = selectedTaille || "à préciser";
     const message = `Bonjour Ankara By K ! 👋\n\nJe suis intéressée par :\n\n• ${product.nom}\n• Taille : ${taille}\n• Prix : ${product.prix.toLocaleString()} FCFA\n\nMerci !`;
-    window.open(`https://wa.me/229648301195?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/22901648301195?text=${encodeURIComponent(message)}`, "_blank");
   };
+
+  const nextImage = () => setCurrentImage((prev) => (prev + 1) % product.images.length);
+  const prevImage = () => setCurrentImage((prev) => (prev - 1 + product.images.length) % product.images.length);
 
   return (
     <>
@@ -41,10 +45,9 @@ export default function ProductCard({ product, addToCart }) {
           object-fit: cover;
           transition: transform 0.4s ease;
           display: block;
+          cursor: zoom-in;
         }
-        .product-img:hover {
-          transform: scale(1.04);
-        }
+        .product-img:hover { transform: scale(1.04); }
         .thumb-btn {
           width: 36px;
           height: 36px;
@@ -104,6 +107,86 @@ export default function ProductCard({ product, addToCart }) {
           transition: all 0.3s ease;
         }
         .btn-panier:hover { background: #B67D52; }
+        .lightbox-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.92);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          animation: fadeIn 0.2s ease;
+        }
+        .lightbox-img {
+          max-width: 90vw;
+          max-height: 85vh;
+          object-fit: contain;
+          border-radius: 4px;
+          animation: zoomIn 0.25s ease;
+        }
+        .lightbox-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+          color: white;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          font-size: 1.2rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+        }
+        .lightbox-btn:hover { background: #B67D52; border-color: #B67D52; }
+        .lightbox-close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
+          color: white;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          font-size: 1.1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+        }
+        .lightbox-close:hover { background: #c0392b; }
+        .lightbox-thumbs {
+          position: absolute;
+          bottom: 1.5rem;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          gap: 0.5rem;
+        }
+        .lightbox-counter {
+          position: absolute;
+          top: 1rem;
+          left: 50%;
+          transform: translateX(-50%);
+          color: rgba(255,255,255,0.6);
+          font-size: 0.8rem;
+          font-family: 'Jost', sans-serif;
+          letter-spacing: 0.1em;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes zoomIn {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
         @media (max-width: 768px) {
           .product-img { height: 220px; }
           .thumb-btn { width: 30px; height: 30px; }
@@ -112,6 +195,79 @@ export default function ProductCard({ product, addToCart }) {
         }
       `}</style>
 
+      {/* LIGHTBOX */}
+      {lightbox && (
+        <div className="lightbox-overlay" onClick={() => setLightbox(false)}>
+
+          {/* COMPTEUR */}
+          <div className="lightbox-counter">
+            {currentImage + 1} / {product.images.length}
+          </div>
+
+          {/* BOUTON FERMER */}
+          <button className="lightbox-close" onClick={() => setLightbox(false)}>✕</button>
+
+          {/* IMAGE */}
+          <img
+            src={product.images[currentImage]}
+            alt={product.nom}
+            className="lightbox-img"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          {/* FLECHE GAUCHE */}
+          {product.images.length > 1 && (
+            <button
+              className="lightbox-btn"
+              style={{ left: "1rem" }}
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            >
+              ‹
+            </button>
+          )}
+
+          {/* FLECHE DROITE */}
+          {product.images.length > 1 && (
+            <button
+              className="lightbox-btn"
+              style={{ right: "1rem" }}
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            >
+              ›
+            </button>
+          )}
+
+          {/* MINIATURES */}
+          <div className="lightbox-thumbs" onClick={(e) => e.stopPropagation()}>
+            {product.images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentImage(i)}
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  border: currentImage === i
+                    ? "2px solid #B67D52"
+                    : "2px solid rgba(255,255,255,0.3)",
+                  borderRadius: "2px",
+                  overflow: "hidden",
+                  padding: 0,
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <img
+                  src={img}
+                  alt={`vue ${i + 1}`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* CARTE PRODUIT */}
       <div className="product-card" style={{ position: "relative" }}>
 
         {/* BADGES */}
@@ -148,12 +304,41 @@ export default function ProductCard({ product, addToCart }) {
           )}
         </div>
 
+        {/* ICONE ZOOM */}
+        <div style={{
+          position: "absolute",
+          top: "0.6rem",
+          right: "0.6rem",
+          zIndex: 2,
+          background: "rgba(255,255,255,0.85)",
+          borderRadius: "50%",
+          width: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          transition: "all 0.2s ease",
+        }}
+          onClick={() => setLightbox(true)}
+          onMouseEnter={e => e.currentTarget.style.background = "#B67D52"}
+          onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.85)"}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+            <line x1="11" y1="8" x2="11" y2="14"/>
+            <line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
+
         {/* IMAGE PRINCIPALE */}
         <div style={{ position: "relative", overflow: "hidden" }}>
           <img
             src={product.images[currentImage]}
             alt={product.nom}
             className="product-img"
+            onClick={() => setLightbox(true)}
           />
 
           {/* MINIATURES */}
@@ -185,7 +370,6 @@ export default function ProductCard({ product, addToCart }) {
         {/* INFOS */}
         <div style={{ padding: "1rem" }}>
 
-          {/* TISSU */}
           <span style={{
             fontSize: "0.62rem",
             letterSpacing: "0.15em",
@@ -194,7 +378,6 @@ export default function ProductCard({ product, addToCart }) {
             fontFamily: "'Jost', sans-serif",
           }}>{product.tissu}</span>
 
-          {/* NOM */}
           <h3 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: "1rem",
@@ -204,7 +387,6 @@ export default function ProductCard({ product, addToCart }) {
             lineHeight: 1.3,
           }}>{product.nom}</h3>
 
-          {/* DESCRIPTION */}
           <p style={{
             fontSize: "0.75rem",
             color: "#7a6a5e",
@@ -216,7 +398,6 @@ export default function ProductCard({ product, addToCart }) {
             overflow: "hidden",
           }}>{product.description}</p>
 
-          {/* PRIX */}
           <p style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: "1.2rem",
@@ -227,7 +408,6 @@ export default function ProductCard({ product, addToCart }) {
             {product.prix.toLocaleString()} <span style={{ fontSize: "0.75rem" }}>FCFA</span>
           </p>
 
-          {/* TAILLES */}
           <div style={{ marginBottom: "0.75rem" }}>
             <p style={{
               fontSize: "0.65rem",
@@ -257,7 +437,6 @@ export default function ProductCard({ product, addToCart }) {
             </div>
           </div>
 
-          {/* ALERTE */}
           {showAlert && (
             <p style={{
               fontSize: "0.7rem",
@@ -269,7 +448,6 @@ export default function ProductCard({ product, addToCart }) {
             </p>
           )}
 
-          {/* BOUTONS */}
           <div style={{ display: "flex", gap: "0.4rem" }}>
             <button onClick={handleWhatsapp} className="btn-whatsapp">
               💬 WhatsApp
