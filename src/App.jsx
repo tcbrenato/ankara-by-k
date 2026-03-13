@@ -8,6 +8,7 @@ import Boutique from "./pages/Boutique";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import Publicite from "./pages/Publicite";
+import FloatingButtons from "./components/FloatingButtons";
 
 export default function App() {
   const [cart, setCart] = useState([]);
@@ -86,6 +87,7 @@ export default function App() {
 
       <Footer />
 
+      <FloatingButtons />
       <CartModal
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

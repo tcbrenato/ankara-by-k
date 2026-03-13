@@ -187,9 +187,7 @@ export default function Home({ addToCart }) {
                 fontStyle: "italic",
                 marginBottom: "1.5rem",
               }}>
-                Ankara By K est née d'une passion profonde pour les tissus africains authentiques.
-                Chaque création est confectionnée sur mesure, alliant tradition et modernité pour
-                sublimer la femme africaine contemporaine.
+                Ankara By K est née d'une passion profonde pour les tissus africains authentiques. Chaque création est confectionnée sur mesure, alliant tradition et modernité pour sublimer la femme africaine contemporaine.
               </p>
               <p style={{
                 fontSize: "0.9rem",
@@ -197,9 +195,7 @@ export default function Home({ addToCart }) {
                 color: "var(--text-muted)",
                 marginBottom: "2rem",
               }}>
-                Nos créations en wax, batik et adirè sont pensées pour mettre en valeur
-                chaque silhouette, avec des coupes modernes et des finitions soignées.
-                Pas de couture sur place — tout est déjà confectionné avec soin et précision.
+                Nos créations en wax, batik et adirè sont pensées pour mettre en valeur chaque silhouette, avec des coupes modernes et des finitions soignées. Pas de couture sur place  tout est déjà confectionné avec soin et précision..
               </p>
               <Link to="/services" className="btn-outline">
                 Découvrir nos services
