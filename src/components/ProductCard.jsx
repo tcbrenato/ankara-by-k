@@ -18,262 +18,268 @@ export default function ProductCard({ product, addToCart }) {
   const handleWhatsapp = () => {
     const taille = selectedTaille || "à préciser";
     const message = `Bonjour Ankara By K ! 👋\n\nJe suis intéressée par :\n\n• ${product.nom}\n• Taille : ${taille}\n• Prix : ${product.prix.toLocaleString()} FCFA\n\nMerci !`;
-    window.open(`https://wa.me/22901648301195?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/229648301195?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (
-    <div style={{
-      background: "var(--white)",
-      border: "1px solid rgba(182,125,82,0.15)",
-      borderRadius: "4px",
-      overflow: "hidden",
-      transition: "var(--transition)",
-      position: "relative",
-    }}
-      onMouseEnter={e => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "var(--shadow-hover)";
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
-      }}
-    >
-      {/* BADGES */}
-      <div style={{
-        position: "absolute",
-        top: "0.75rem",
-        left: "0.75rem",
-        zIndex: 2,
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.35rem",
-      }}>
-        {product.nouveaute && (
-          <span style={{
-            background: "var(--dark)",
-            color: "var(--white)",
-            fontSize: "0.62rem",
-            padding: "3px 8px",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            fontFamily: "var(--font-body)",
-          }}>Nouveau</span>
-        )}
-        {product.solde && (
-          <span style={{
-            background: "#c0392b",
-            color: "var(--white)",
-            fontSize: "0.62rem",
-            padding: "3px 8px",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            fontFamily: "var(--font-body)",
-          }}>Soldes</span>
-        )}
-      </div>
+    <>
+      <style>{`
+        .product-card {
+          background: #fff;
+          border: 1px solid rgba(182,125,82,0.15);
+          border-radius: 4px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+        .product-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 32px rgba(30,35,42,0.15);
+        }
+        .product-img {
+          width: 100%;
+          height: 280px;
+          object-fit: cover;
+          transition: transform 0.4s ease;
+          display: block;
+        }
+        .product-img:hover {
+          transform: scale(1.04);
+        }
+        .thumb-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 2px;
+          overflow: hidden;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .thumb-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .taille-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 2px;
+          font-size: 0.7rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .btn-whatsapp {
+          flex: 1;
+          padding: 0.6rem 0.4rem;
+          background: #25D366;
+          color: #fff;
+          border: none;
+          border-radius: 2px;
+          font-size: 0.72rem;
+          font-family: 'Jost', sans-serif;
+          letter-spacing: 0.03em;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.25rem;
+          transition: all 0.3s ease;
+        }
+        .btn-whatsapp:hover { background: #1da851; }
+        .btn-panier {
+          flex: 1;
+          padding: 0.6rem 0.4rem;
+          background: #1E232A;
+          color: #fff;
+          border: none;
+          border-radius: 2px;
+          font-size: 0.72rem;
+          font-family: 'Jost', sans-serif;
+          letter-spacing: 0.03em;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.25rem;
+          transition: all 0.3s ease;
+        }
+        .btn-panier:hover { background: #B67D52; }
+        @media (max-width: 768px) {
+          .product-img { height: 220px; }
+          .thumb-btn { width: 30px; height: 30px; }
+          .taille-btn { width: 28px; height: 28px; font-size: 0.65rem; }
+          .btn-whatsapp, .btn-panier { font-size: 0.68rem; padding: 0.55rem 0.3rem; }
+        }
+      `}</style>
 
-      {/* IMAGES */}
-      <div style={{ position: "relative", overflow: "hidden" }}>
-        <img
-          src={product.images[currentImage]}
-          alt={product.nom}
-          style={{
-            width: "100%",
-            height: "320px",
-            objectFit: "cover",
-            transition: "transform 0.4s ease",
-            display: "block",
-          }}
-          onMouseEnter={e => e.target.style.transform = "scale(1.04)"}
-          onMouseLeave={e => e.target.style.transform = "scale(1)"}
-        />
+      <div className="product-card" style={{ position: "relative" }}>
 
-        {/* MINIATURES */}
+        {/* BADGES */}
         <div style={{
           position: "absolute",
-          bottom: "0.75rem",
-          left: "50%",
-          transform: "translateX(-50%)",
+          top: "0.6rem",
+          left: "0.6rem",
+          zIndex: 2,
           display: "flex",
-          gap: "0.4rem",
+          flexDirection: "column",
+          gap: "0.3rem",
         }}>
-          {product.images.map((img, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentImage(i)}
-              style={{
-                width: "42px",
-                height: "42px",
-                border: currentImage === i
-                  ? "2px solid var(--gold)"
-                  : "2px solid rgba(255,255,255,0.6)",
-                borderRadius: "2px",
-                overflow: "hidden",
-                padding: 0,
-                cursor: "pointer",
-                transition: "var(--transition)",
-              }}
-            >
-              <img
-                src={img}
-                alt={`vue ${i + 1}`}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-            </button>
-          ))}
+          {product.nouveaute && (
+            <span style={{
+              background: "#1E232A",
+              color: "#fff",
+              fontSize: "0.58rem",
+              padding: "2px 7px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              fontFamily: "'Jost', sans-serif",
+            }}>Nouveau</span>
+          )}
+          {product.solde && (
+            <span style={{
+              background: "#c0392b",
+              color: "#fff",
+              fontSize: "0.58rem",
+              padding: "2px 7px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              fontFamily: "'Jost', sans-serif",
+            }}>Soldes</span>
+          )}
         </div>
-      </div>
 
-      {/* INFOS PRODUIT */}
-      <div style={{ padding: "1.25rem" }}>
+        {/* IMAGE PRINCIPALE */}
+        <div style={{ position: "relative", overflow: "hidden" }}>
+          <img
+            src={product.images[currentImage]}
+            alt={product.nom}
+            className="product-img"
+          />
 
-        {/* TISSU */}
-        <span style={{
-          fontSize: "0.68rem",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: "var(--gold)",
-          fontFamily: "var(--font-body)",
-        }}>{product.tissu}</span>
-
-        {/* NOM */}
-        <h3 style={{
-          fontFamily: "var(--font-elegant)",
-          fontSize: "1.1rem",
-          fontWeight: "500",
-          margin: "0.35rem 0 0.5rem",
-          color: "var(--dark)",
-          lineHeight: 1.3,
-        }}>{product.nom}</h3>
-
-        {/* DESCRIPTION */}
-        <p style={{
-          fontSize: "0.8rem",
-          color: "var(--text-muted)",
-          lineHeight: 1.6,
-          marginBottom: "1rem",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-        }}>{product.description}</p>
-
-        {/* PRIX */}
-        <p style={{
-          fontFamily: "var(--font-elegant)",
-          fontSize: "1.3rem",
-          color: "var(--gold)",
-          fontWeight: "500",
-          marginBottom: "1rem",
-        }}>
-          {product.prix.toLocaleString()} <span style={{ fontSize: "0.8rem" }}>FCFA</span>
-        </p>
-
-        {/* TAILLES */}
-        <div style={{ marginBottom: "1rem" }}>
-          <p style={{
-            fontSize: "0.72rem",
-            color: "var(--text-muted)",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            marginBottom: "0.5rem",
-          }}>Taille</p>
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-            {product.tailles.map((t) => (
+          {/* MINIATURES */}
+          <div style={{
+            position: "absolute",
+            bottom: "0.6rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            gap: "0.3rem",
+          }}>
+            {product.images.map((img, i) => (
               <button
-                key={t}
-                onClick={() => setSelectedTaille(t)}
+                key={i}
+                onClick={() => setCurrentImage(i)}
+                className="thumb-btn"
                 style={{
-                  width: "36px",
-                  height: "36px",
-                  border: selectedTaille === t
-                    ? "1.5px solid var(--gold)"
-                    : "1px solid rgba(182,125,82,0.3)",
-                  borderRadius: "2px",
-                  fontSize: "0.75rem",
-                  fontFamily: "var(--font-body)",
-                  fontWeight: selectedTaille === t ? "600" : "400",
-                  color: selectedTaille === t ? "var(--white)" : "var(--dark)",
-                  background: selectedTaille === t ? "var(--gold)" : "transparent",
-                  transition: "var(--transition)",
-                  cursor: "pointer",
+                  border: currentImage === i
+                    ? "2px solid #B67D52"
+                    : "2px solid rgba(255,255,255,0.6)",
                 }}
-              >{t}</button>
+              >
+                <img src={img} alt={`vue ${i + 1}`} className="thumb-img" />
+              </button>
             ))}
           </div>
         </div>
 
-        {/* ALERTE TAILLE */}
-        {showAlert && (
+        {/* INFOS */}
+        <div style={{ padding: "1rem" }}>
+
+          {/* TISSU */}
+          <span style={{
+            fontSize: "0.62rem",
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "#B67D52",
+            fontFamily: "'Jost', sans-serif",
+          }}>{product.tissu}</span>
+
+          {/* NOM */}
+          <h3 style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "1rem",
+            fontWeight: "500",
+            margin: "0.25rem 0 0.4rem",
+            color: "#1E232A",
+            lineHeight: 1.3,
+          }}>{product.nom}</h3>
+
+          {/* DESCRIPTION */}
           <p style={{
             fontSize: "0.75rem",
-            color: "#c0392b",
+            color: "#7a6a5e",
+            lineHeight: 1.5,
             marginBottom: "0.75rem",
-            fontStyle: "italic",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}>{product.description}</p>
+
+          {/* PRIX */}
+          <p style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "1.2rem",
+            color: "#B67D52",
+            fontWeight: "500",
+            marginBottom: "0.75rem",
           }}>
-            ⚠️ Veuillez sélectionner une taille
+            {product.prix.toLocaleString()} <span style={{ fontSize: "0.75rem" }}>FCFA</span>
           </p>
-        )}
 
-        {/* BOUTONS */}
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button
-            onClick={handleWhatsapp}
-            style={{
-              flex: 1,
-              padding: "0.65rem 0.5rem",
-              background: "#25D366",
-              color: "var(--white)",
-              border: "none",
-              borderRadius: "2px",
-              fontSize: "0.75rem",
-              fontFamily: "var(--font-body)",
-              letterSpacing: "0.05em",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.3rem",
-              transition: "var(--transition)",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "#1da851"}
-            onMouseLeave={e => e.currentTarget.style.background = "#25D366"}
-          >
-            💬 WhatsApp
-          </button>
+          {/* TAILLES */}
+          <div style={{ marginBottom: "0.75rem" }}>
+            <p style={{
+              fontSize: "0.65rem",
+              color: "#7a6a5e",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "0.4rem",
+              fontFamily: "'Jost', sans-serif",
+            }}>Taille</p>
+            <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+              {product.tailles.map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setSelectedTaille(t)}
+                  className="taille-btn"
+                  style={{
+                    border: selectedTaille === t
+                      ? "1.5px solid #B67D52"
+                      : "1px solid rgba(182,125,82,0.3)",
+                    fontFamily: "'Jost', sans-serif",
+                    fontWeight: selectedTaille === t ? "600" : "400",
+                    color: selectedTaille === t ? "#fff" : "#1E232A",
+                    background: selectedTaille === t ? "#B67D52" : "transparent",
+                  }}
+                >{t}</button>
+              ))}
+            </div>
+          </div>
 
-          <button
-            onClick={handleAddToCart}
-            style={{
-              flex: 1,
-              padding: "0.65rem 0.5rem",
-              background: "var(--dark)",
-              color: "var(--white)",
-              border: "none",
-              borderRadius: "2px",
-              fontSize: "0.75rem",
-              fontFamily: "var(--font-body)",
-              letterSpacing: "0.05em",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.3rem",
-              transition: "var(--transition)",
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = "var(--gold)"}
-            onMouseLeave={e => e.currentTarget.style.background = "var(--dark)"}
-          >
-            🛒 Panier
-          </button>
+          {/* ALERTE */}
+          {showAlert && (
+            <p style={{
+              fontSize: "0.7rem",
+              color: "#c0392b",
+              marginBottom: "0.5rem",
+              fontStyle: "italic",
+            }}>
+              ⚠️ Veuillez sélectionner une taille
+            </p>
+          )}
+
+          {/* BOUTONS */}
+          <div style={{ display: "flex", gap: "0.4rem" }}>
+            <button onClick={handleWhatsapp} className="btn-whatsapp">
+              💬 WhatsApp
+            </button>
+            <button onClick={handleAddToCart} className="btn-panier">
+              🛒 Panier
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
