@@ -357,7 +357,7 @@ export default function Home({ addToCart }) {
               Voir la boutique
             </Link>
             <a
-              href="https://wa.me/229648301195"
+              href="https://wa.me/22964830195"
               target="_blank"
               rel="noreferrer"
               style={{

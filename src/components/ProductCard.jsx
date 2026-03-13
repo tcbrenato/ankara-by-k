@@ -19,7 +19,7 @@ export default function ProductCard({ product, addToCart }) {
   const handleWhatsapp = () => {
     const taille = selectedTaille || "à préciser";
     const message = `Bonjour Ankara By K ! 👋\n\nJe suis intéressée par :\n\n• ${product.nom}\n• Taille : ${taille}\n• Prix : ${product.prix.toLocaleString()} FCFA\n\nMerci !`;
-    window.open(`https://wa.me/229648301195?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(`https://wa.me/22964830195?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % product.images.length);
