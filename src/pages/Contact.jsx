@@ -5,7 +5,7 @@ export default function Contact() {
     const sujet = e.target.sujet.value;
     const message = e.target.message.value;
     const texte = `Bonjour Ankara By K ! 👋\n\nJe m'appelle *${nom}*\n\n📌 Sujet : ${sujet}\n\n💬 Message :\n${message}\n\nMerci !`;
-    window.open(`https://wa.me/22901648301195?text=${encodeURIComponent(texte)}`, "_blank");
+    window.open(`https://wa.me/229648301195?text=${encodeURIComponent(texte)}`, "_blank");
   };
 
   return (
@@ -199,7 +199,7 @@ export default function Contact() {
                 </span>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginBottom: "2px" }}>WhatsApp</p>
-                  <a href="https://wa.me/22901648301195" target="_blank" rel="noreferrer" style={{
+                  <a href="https://wa.me/229648301195" target="_blank" rel="noreferrer" style={{
                     fontSize: "0.9rem",
                     color: "#25D366",
                     fontWeight: "500",
